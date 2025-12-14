@@ -1,0 +1,5 @@
+debate_output.txt
+__pycache__/
+*.pyc
+core
+core.*
