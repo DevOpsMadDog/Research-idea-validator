@@ -1,0 +1,14 @@
+# Multi-Agent Debate System for Financial Product Validation
+# No external dependencies required - pure Python 3.8+
+
+# The system uses only Python standard library:
+# - dataclasses (built-in Python 3.7+)
+# - typing (built-in)
+# - abc (built-in)
+# - enum (built-in)
+# - time (built-in)
+# - datetime (built-in)
+# - argparse (built-in)
+
+# Optional: For enhanced output formatting
+# rich>=13.0.0  # Uncomment for colored terminal output
