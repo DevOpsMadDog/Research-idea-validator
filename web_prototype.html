@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Debate System - Financial Products Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .debate-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .agent-card {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .agent-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .agent-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .agent-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .agent-role {
+            color: #666;
+            font-style: italic;
+        }
+        
+        .intensity-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .intensity-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #FFC107, #FF5722);
+            transition: width 0.3s;
+        }
+        
+        .statement {
+            color: #444;
+            line-height: 1.6;
+            margin: 15px 0;
+            font-size: 1.05em;
+        }
+        
+        .evidence {
+            background: #e3f2fd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        
+        .evidence-title {
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 5px;
+        }
+        
+        .judge-panel {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        
+        .judge-panel h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        
+        .winner-badge {
+            display: inline-block;
+            background: gold;
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin: 10px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .insight-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-top: 4px solid #667eea;
+        }
+        
+        .insight-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .product-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .product-list li {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+            transition: transform 0.2s;
+        }
+        
+        .product-list li:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .score-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .score-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .score-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 0 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .round-indicator {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .round-indicator h2 {
+            color: #667eea;
+            font-size: 2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 AI Agent Debate System</h1>
+            <p>Intense Multi-Agent Analysis: Missing Financial Products in India</p>
+        </div>
+        
+        <div class="content">
+            <div class="round-indicator">
+                <h2>Round <span id="currentRound">1</span></h2>
+                <p>Debate Intensity: <span id="intensityLevel">Escalating</span></p>
+            </div>
+            
+            <div class="debate-section" id="debateArea">
+                <!-- Agent arguments will be dynamically inserted here -->
+            </div>
+            
+            <div class="judge-panel" id="judgePanel" style="display: none;">
+                <h3>⚖️ Supreme Judge AI - Final Judgment</h3>
+                <div class="winner-badge" id="winnerBadge">Winner: Loading...</div>
+                <div class="score-board" id="scoreBoard">
+                    <!-- Scores will be inserted here -->
+                </div>
+            </div>
+            
+            <div class="debate-section" id="insightsSection" style="display: none;">
+                <h2 class="section-title">💡 Key Insights & Recommendations</h2>
+                <div class="insights-grid" id="insightsGrid">
+                    <!-- Insights will be inserted here -->
+                </div>
+            </div>
+            
+            <div class="debate-section" id="productsSection" style="display: none;">
+                <h2 class="section-title">🎯 Top Missing Financial Products</h2>
+                <ul class="product-list" id="productList">
+                    <!-- Products will be inserted here -->
+                </ul>
+            </div>
+            
+            <div class="controls">
+                <button class="btn" onclick="startDebate()">🚀 Start Debate</button>
+                <button class="btn" onclick="showFinalJudgment()">⚖️ Show Final Judgment</button>
+                <button class="btn" onclick="loadFromJSON()">📊 Load Results</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const agents = [
+            { name: "RegBot-3000", role: "Regulatory Compliance Agent", color: "#FF5722" },
+            { name: "InnoVator-X", role: "Innovation & FinTech Agent", color: "#4CAF50" },
+            { name: "MarketMind", role: "Market Research Agent", color: "#2196F3" },
+            { name: "RiskGuard", role: "Risk Management Agent", color: "#FF9800" },
+            { name: "ConsumerVoice", role: "Consumer Protection Agent", color: "#9C27B0" },
+            { name: "BankMaster", role: "Traditional Banking Agent", color: "#607D8B" }
+        ];
+        
+        const sampleArguments = [
+            {
+                agent: "RegBot-3000",
+                role: "Regulatory Compliance Agent",
+                statement: "RBI regulations currently restrict many innovative products. We need a regulatory sandbox approach to enable innovation safely while maintaining consumer protection.",
+                intensity: 7,
+                evidence: ["RBI Master Circular on Financial Products", "SEBI Regulatory Framework 2024"]
+            },
+            {
+                agent: "InnoVator-X",
+                role: "Innovation & FinTech Agent",
+                statement: "India needs decentralized finance (DeFi) products for financial inclusion. The unbanked population of 400M+ represents a massive opportunity for innovative fintech solutions.",
+                intensity: 9,
+                evidence: ["Global FinTech Innovation Trends 2024", "India's Digital Payment Revolution Success"]
+            },
+            {
+                agent: "MarketMind",
+                role: "Market Research Agent",
+                statement: "Market research shows 60% demand for better retirement products. The middle-class needs structured products for wealth creation that are currently missing.",
+                intensity: 6,
+                evidence: ["NSSO Consumer Expenditure Survey", "CRISIL Market Research Reports"]
+            },
+            {
+                agent: "RiskGuard",
+                role: "Risk Management Agent",
+                statement: "New products must have robust risk assessment frameworks. Systemic risk from unregulated products threatens financial stability - we cannot compromise on this.",
+                intensity: 8,
+                evidence: ["RBI Financial Stability Report", "Basel III Risk Framework"]
+            },
+            {
+                agent: "ConsumerVoice",
+                role: "Consumer Protection Agent",
+                statement: "Products must be accessible to non-English speakers. The digital divide prevents rural access to new products - this is a critical barrier.",
+                intensity: 7,
+                evidence: ["Consumer Complaints Data (RBI Ombudsman)", "Financial Literacy Survey India"]
+            },
+            {
+                agent: "BankMaster",
+                role: "Traditional Banking Agent",
+                statement: "Traditional products have proven track records. Banks have extensive distribution networks and customer trust that fintechs cannot match.",
+                intensity: 5,
+                evidence: ["Banking Industry Performance Reports", "Customer Trust Surveys"]
+            }
+        ];
+        
+        function createAgentCard(arg) {
+            const agent = agents.find(a => a.name === arg.agent);
+            const intensityPercent = (arg.intensity / 10) * 100;
+            
+            return `
+                <div class="agent-card" style="border-left-color: ${agent?.color || '#667eea'}">
+                    <div class="agent-header">
+                        <div>
+                            <div class="agent-name">${arg.agent}</div>
+                            <div class="agent-role">${arg.role}</div>
+                        </div>
+                        <div style="font-weight: bold; color: ${agent?.color || '#667eea'}">
+                            Intensity: ${arg.intensity}/10
+                        </div>
+                    </div>
+                    <div class="intensity-bar">
+                        <div class="intensity-fill" style="width: ${intensityPercent}%"></div>
+                    </div>
+                    <div class="statement">${arg.statement}</div>
+                    <div class="evidence">
+                        <div class="evidence-title">📚 Evidence:</div>
+                        ${arg.evidence.map(e => `• ${e}`).join('<br>')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        let currentRound = 0;
+        const rounds = [];
+        
+        function startDebate() {
+            const debateArea = document.getElementById('debateArea');
+            debateArea.innerHTML = '<h2 class="section-title">🔥 Debate in Progress...</h2>';
+            
+            // Simulate 5 rounds
+            for (let round = 1; round <= 5; round++) {
+                setTimeout(() => {
+                    currentRound = round;
+                    document.getElementById('currentRound').textContent = round;
+                    document.getElementById('intensityLevel').textContent = 
+                        round <= 2 ? 'Building' : round <= 4 ? 'Escalating' : 'Peak Intensity';
+                    
+                    const roundArgs = sampleArguments.map(arg => ({
+                        ...arg,
+                        intensity: Math.min(10, arg.intensity + Math.floor(Math.random() * 2)),
+                        statement: arg.statement + (round > 2 ? ` [Round ${round} - Counter-arguments intensifying]` : '')
+                    }));
+                    
+                    rounds.push(roundArgs);
+                    
+                    let html = `<h2 class="section-title">Round ${round} - Arguments</h2>`;
+                    roundArgs.forEach(arg => {
+                        html += createAgentCard(arg);
+                    });
+                    
+                    debateArea.innerHTML = html;
+                    debateArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, round * 2000);
+            }
+        }
+        
+        function showFinalJudgment() {
+            const judgment = {
+                overall_winner: "InnoVator-X",
+                agent_scores: {
+                    "InnoVator-X": 87.5,
+                    "RiskGuard": 82.3,
+                    "MarketMind": 79.1,
+                    "RegBot-3000": 76.8,
+                    "ConsumerVoice": 74.2,
+                    "BankMaster": 71.5
+                },
+                key_insights: [
+                    "Regulatory framework needs modernization while maintaining stability",
+                    "Innovation must balance disruption with consumer protection",
+                    "Market demand exists but requires proper product-market fit"
+                ],
+                recommendations: [
+                    "Establish regulatory sandbox for testing new products",
+                    "Develop financial literacy programs alongside products",
+                    "Create risk assessment frameworks for new product categories"
+                ],
+                top_missing_products: [
+                    "AI-powered personalized investment advisors",
+                    "Micro-investment platforms for daily savings",
+                    "Real-time insurance for gig economy workers",
+                    "Fractional real estate investment products",
+                    "Social trading and copy-trading platforms"
+                ]
+            };
+            
+            document.getElementById('winnerBadge').textContent = `Winner: ${judgment.overall_winner}`;
+            
+            const scoreBoard = document.getElementById('scoreBoard');
+            scoreBoard.innerHTML = Object.entries(judgment.agent_scores)
+                .sort((a, b) => b[1] - a[1])
+                .map(([agent, score]) => `
+                    <div class="score-card">
+                        <div style="font-size: 0.9em; opacity: 0.9">${agent}</div>
+                        <div class="score-value">${score.toFixed(1)}</div>
+                    </div>
+                `).join('');
+            
+            const insightsGrid = document.getElementById('insightsGrid');
+            insightsGrid.innerHTML = judgment.key_insights.map(insight => `
+                <div class="insight-card">
+                    <h4>💡 Insight</h4>
+                    <p>${insight}</p>
+                </div>
+            `).join('');
+            
+            const productList = document.getElementById('productList');
+            productList.innerHTML = judgment.top_missing_products.map((product, idx) => `
+                <li>
+                    <strong>${idx + 1}.</strong> ${product}
+                </li>
+            `).join('');
+            
+            document.getElementById('judgePanel').style.display = 'block';
+            document.getElementById('insightsSection').style.display = 'block';
+            document.getElementById('productsSection').style.display = 'block';
+            
+            document.getElementById('judgePanel').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function loadFromJSON() {
+            // This would load from debate_results.json if available
+            alert('To load from JSON file, ensure debate_results.json exists and implement file reading.');
+        }
+        
+        // Initialize with first round
+        window.onload = function() {
+            document.getElementById('debateArea').innerHTML = `
+                <h2 class="section-title">Ready to Begin</h2>
+                <p style="text-align: center; color: #666; font-size: 1.1em; padding: 40px;">
+                    Click "Start Debate" to begin the intense AI agent debate simulation.<br>
+                    Watch as multiple AI agents with different expertise areas argue their perspectives!
+                </p>
+            `;
+        };
+    </script>
+</body>
+</html>
