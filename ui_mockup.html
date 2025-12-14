@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAMPOORNA - Federated Financial Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: white;
+            border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin: 40px auto;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background: #6366f1;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 14px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .balance-card {
+            background: white;
+            margin: -30px 20px 20px;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .balance-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .balance-amount {
+            font-size: 36px;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        
+        .balance-change {
+            font-size: 14px;
+            color: #10b981;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-box {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e293b;
+        }
+        
+        .section {
+            padding: 0 20px 20px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #1e293b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-title a {
+            font-size: 14px;
+            color: #6366f1;
+            text-decoration: none;
+            font-weight: normal;
+        }
+        
+        .account-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .account-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .account-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .account-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: #1e293b;
+        }
+        
+        .account-type {
+            font-size: 12px;
+            color: #64748b;
+        }
+        
+        .account-balance {
+            text-align: right;
+        }
+        
+        .account-amount {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .insight-card {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-left: 4px solid #f59e0b;
+        }
+        
+        .insight-icon {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        
+        .insight-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #92400e;
+        }
+        
+        .insight-description {
+            font-size: 13px;
+            color: #78350f;
+            margin-bottom: 10px;
+        }
+        
+        .insight-action {
+            display: inline-block;
+            background: white;
+            color: #f59e0b;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 375px;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-radius: 40px 40px 0 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 11px;
+        }
+        
+        .nav-item.active {
+            color: #6366f1;
+        }
+        
+        .nav-icon {
+            font-size: 22px;
+        }
+        
+        .mockup-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .mockup-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .mockup-header h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .mockup-header p {
+            font-size: 20px;
+            opacity: 0.9;
+        }
+        
+        .mockup-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(375px, 1fr));
+            gap: 40px;
+            justify-items: center;
+        }
+        
+        .screen-label {
+            text-align: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="mockup-container">
+        <div class="mockup-header">
+            <h1>SAMPOORNA</h1>
+            <p>Federated Financial Dashboard - UI Prototype</p>
+        </div>
+        
+        <div class="mockup-grid">
+            <!-- Screen 1: Dashboard -->
+            <div>
+                <div class="phone-frame">
+                    <div class="status-bar">
+                        <span>9:41</span>
+                        <span>⚡ 📶 100%</span>
+                    </div>
+                    
+                    <div class="header">
+                        <h1>SAMPOORNA</h1>
+                        <p>Your complete financial life</p>
+                    </div>
+                    
+                    <div style="background: linear-gradient(180deg, #6366f1 0%, #f8fafc 200px); padding-bottom: 20px; min-height: calc(812px - 44px - 70px); overflow-y: auto;">
+                        <div class="balance-card">
+                            <div class="balance-label">Total Balance</div>
+                            <div class="balance-amount">₹4,56,789</div>
+                            <div class="balance-change">
+                                ↑ <span>+₹12,450 this month</span>
+                            </div>
+                            
+                            <div class="quick-stats">
+                                <div class="stat-box">
+                                    <div class="stat-label">Bank</div>
+                                    <div class="stat-value">₹1.5L</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-label">Invest</div>
+                                    <div class="stat-value">₹2.8L</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-label">Insurance</div>
+                                    <div class="stat-value">₹16K</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="section">
+                            <div class="section-title">
+                                <span>Linked Accounts</span>
+                                <a href="#">View all →</a>
+                            </div>
+                            
+                            <div class="account-card">
+                                <div class="account-info">
+                                    <div class="account-icon">🏦</div>
+                                    <div>
+                                        <div class="account-name">HDFC Bank</div>
+                                        <div class="account-type">Savings</div>
+                                    </div>
+                                </div>
+                                <div class="account-balance">
+                                    <div class="account-amount">₹89,450</div>
+                                </div>
+                            </div>
+                            
+                            <div class="account-card">
+                                <div class="account-info">
+                                    <div class="account-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">📈</div>
+                                    <div>
+                                        <div class="account-name">Zerodha</div>
+                                        <div class="account-type">Stocks</div>
+                                    </div>
+                                </div>
+                                <div class="account-balance">
+                                    <div class="account-amount">₹2,12,340</div>
+                                </div>
+                            </div>
+                            
+                            <div class="account-card">
+                                <div class="account-info">
+                                    <div class="account-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">💰</div>
+                                    <div>
+                                        <div class="account-name">Groww MF</div>
+                                        <div class="account-type">Mutual Funds</div>
+                                    </div>
+                                </div>
+                                <div class="account-balance">
+                                    <div class="account-amount">₹68,900</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bottom-nav">
+                        <a href="#" class="nav-item active">
+                            <span class="nav-icon">🏠</span>
+                            <span>Home</span>
+                        </a>
+                        <a href="#" class="nav-item">
+                            <span class="nav-icon">💡</span>
+                            <span>Insights</span>
+                        </a>
+                        <a href="#" class="nav-item">
+                            <span class="nav-icon">🎯</span>
+                            <span>Goals</span>
+                        </a>
+                        <a href="#" class="nav-item">
+                            <span class="nav-icon">⚙️</span>
+                            <span>More</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="screen-label">Dashboard View</div>
+            </div>
+            
+            <!-- Screen 2: Insights -->
+            <div>
+                <div class="phone-frame">
+                    <div class="status-bar">
+                        <span>9:41</span>
+                        <span>⚡ 📶 100%</span>
+                    </div>
+                    
+                    <div class="header">
+                        <h1>Insights</h1>
+                        <p>Personalized recommendations</p>
+                    </div>
+                    
+                    <div style="background: #f8fafc; padding: 20px; min-height: calc(812px - 44px - 96px - 70px); overflow-y: auto;">
+                        <div class="insight-card">
+                            <div class="insight-icon">⚠️</div>
+                            <div class="insight-title">High Spending Alert</div>
+                            <div class="insight-description">
+                                You spent ₹8,450 on dining this month. That's 40% more than usual.
+                            </div>
+                            <a href="#" class="insight-action">View breakdown →</a>
+                        </div>
+                        
+                        <div class="insight-card" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left-color: #3b82f6;">
+                            <div class="insight-icon">💰</div>
+                            <div class="insight-title" style="color: #1e40af;">Savings Opportunity</div>
+                            <div class="insight-description" style="color: #1e3a8a;">
+                                You have ₹45,000 idle in savings account. Consider moving to liquid fund (+6% returns).
+                            </div>
+                            <a href="#" class="insight-action" style="color: #3b82f6;">Start SIP →</a>
+                        </div>
+                        
+                        <div class="insight-card" style="background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%); border-left-color: #ef4444;">
+                            <div class="insight-icon">📅</div>
+                            <div class="insight-title" style="color: #991b1b;">Upcoming Bills</div>
+                            <div class="insight-description" style="color: #7f1d1d;">
+                                Credit card payment due in 3 days (₹12,340). Avoid late fees!
+                            </div>
+                            <a href="#" class="insight-action" style="color: #ef4444;">Pay now →</a>
+                        </div>
+                        
+                        <div class="insight-card" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-left-color: #10b981;">
+                            <div class="insight-icon">🎯</div>
+                            <div class="insight-title" style="color: #065f46;">Goal Progress</div>
+                            <div class="insight-description" style="color: #064e3b;">
+                                You're on track for "House Down Payment" goal. Just ₹7,20,000 more to go!
+                            </div>
+                            <a href="#" class="insight-action" style="color: #10b981;">View goals →</a>
+                        </div>
+                        
+                        <div class="insight-card" style="background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%); border-left-color: #a855f7;">
+                            <div class="insight-icon">📊</div>
+                            <div class="insight-title" style="color: #6b21a8;">Credit Score Update</div>
+                            <div class="insight-description" style="color: #581c87;">
+                                Your CIBIL score improved to 745 (+12 points). Great job!
+                            </div>
+                            <a href="#" class="insight-action" style="color: #a855f7;">View details →</a>
+                        </div>
+                    </div>
+                    
+                    <div class="bottom-nav">
+                        <a href="#" class="nav-item">
+                            <span class="nav-icon">🏠</span>
+                            <span>Home</span>
+                        </a>
+                        <a href="#" class="nav-item active">
+                            <span class="nav-icon">💡</span>
+                            <span>Insights</span>
+                        </a>
+                        <a href="#" class="nav-item">
+                            <span class="nav-icon">🎯</span>
+                            <span>Goals</span>
+                        </a>
+                        <a href="#" class="nav-item">
+                            <span class="nav-icon">⚙️</span>
+                            <span>More</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="screen-label">Insights View</div>
+            </div>
+            
+            <!-- Screen 3: Goals -->
+            <div>
+                <div class="phone-frame">
+                    <div class="status-bar">
+                        <span>9:41</span>
+                        <span>⚡ 📶 100%</span>
+                    </div>
+                    
+                    <div class="header">
+                        <h1>Goals</h1>
+                        <p>Track and achieve your dreams</p>
+                    </div>
+                    
+                    <div style="background: #f8fafc; padding: 20px; min-height: calc(812px - 44px - 96px - 70px); overflow-y: auto;">
+                        <div style="background: white; border-radius: 16px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                <div>
+                                    <div style="font-size: 18px; font-weight: 600; color: #1e293b;">House Down Payment</div>
+                                    <div style="font-size: 13px; color: #64748b; margin-top: 2px;">Target: Dec 2026</div>
+                                </div>
+                                <div style="font-size: 24px;">🏠</div>
+                            </div>
+                            
+                            <div style="margin-bottom: 10px;">
+                                <div style="display: flex; justify-content: space-between; font-size: 13px; color: #64748b; margin-bottom: 5px;">
+                                    <span>Progress</span>
+                                    <span>₹2,80,000 / ₹10,00,000</span>
+                                </div>
+                                <div style="background: #e2e8f0; height: 10px; border-radius: 5px; overflow: hidden;">
+                                    <div style="background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%); width: 28%; height: 100%;"></div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                <div style="flex: 1; background: #f8fafc; padding: 10px; border-radius: 8px; text-align: center;">
+                                    <div style="font-size: 11px; color: #64748b;">Auto-invest</div>
+                                    <div style="font-size: 16px; font-weight: 600; color: #1e293b;">₹15,000/mo</div>
+                                </div>
+                                <div style="flex: 1; background: #f8fafc; padding: 10px; border-radius: 8px; text-align: center;">
+                                    <div style="font-size: 11px; color: #64748b;">Completion</div>
+                                    <div style="font-size: 16px; font-weight: 600; color: #1e293b;">28%</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="background: white; border-radius: 16px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                <div>
+                                    <div style="font-size: 18px; font-weight: 600; color: #1e293b;">Emergency Fund</div>
+                                    <div style="font-size: 13px; color: #64748b; margin-top: 2px;">Target: Jun 2025</div>
+                                </div>
+                                <div style="font-size: 24px;">🚨</div>
+                            </div>
+                            
+                            <div style="margin-bottom: 10px;">
+                                <div style="display: flex; justify-content: space-between; font-size: 13px; color: #64748b; margin-bottom: 5px;">
+                                    <span>Progress</span>
+                                    <span>₹1,20,000 / ₹3,00,000</span>
+                                </div>
+                                <div style="background: #e2e8f0; height: 10px; border-radius: 5px; overflow: hidden;">
+                                    <div style="background: linear-gradient(90deg, #10b981 0%, #059669 100%); width: 40%; height: 100%;"></div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                <div style="flex: 1; background: #f8fafc; padding: 10px; border-radius: 8px; text-align: center;">
+                                    <div style="font-size: 11px; color: #64748b;">Auto-invest</div>
+                                    <div style="font-size: 16px; font-weight: 600; color: #1e293b;">₹5,000/mo</div>
+                                </div>
+                                <div style="flex: 1; background: #f8fafc; padding: 10px; border-radius: 8px; text-align: center;">
+                                    <div style="font-size: 11px; color: #64748b;">Completion</div>
+                                    <div style="font-size: 16px; font-weight: 600; color: #1e293b;">40%</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="background: white; border-radius: 16px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                <div>
+                                    <div style="font-size: 18px; font-weight: 600; color: #1e293b;">Europe Trip</div>
+                                    <div style="font-size: 13px; color: #64748b; margin-top: 2px;">Target: Sep 2025</div>
+                                </div>
+                                <div style="font-size: 24px;">✈️</div>
+                            </div>
+                            
+                            <div style="margin-bottom: 10px;">
+                                <div style="display: flex; justify-content: space-between; font-size: 13px; color: #64748b; margin-bottom: 5px;">
+                                    <span>Progress</span>
+                                    <span>₹58,000 / ₹2,00,000</span>
+                                </div>
+                                <div style="background: #e2e8f0; height: 10px; border-radius: 5px; overflow: hidden;">
+                                    <div style="background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%); width: 29%; height: 100%;"></div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                <div style="flex: 1; background: #f8fafc; padding: 10px; border-radius: 8px; text-align: center;">
+                                    <div style="font-size: 11px; color: #64748b;">Auto-invest</div>
+                                    <div style="font-size: 16px; font-weight: 600; color: #1e293b;">₹8,000/mo</div>
+                                </div>
+                                <div style="flex: 1; background: #f8fafc; padding: 10px; border-radius: 8px; text-align: center;">
+                                    <div style="font-size: 11px; color: #64748b;">Completion</div>
+                                    <div style="font-size: 16px; font-weight: 600; color: #1e293b;">29%</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button style="width: 100%; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer;">
+                            + Create New Goal
+                        </button>
+                    </div>
+                    
+                    <div class="bottom-nav">
+                        <a href="#" class="nav-item">
+                            <span class="nav-icon">🏠</span>
+                            <span>Home</span>
+                        </a>
+                        <a href="#" class="nav-item">
+                            <span class="nav-icon">💡</span>
+                            <span>Insights</span>
+                        </a>
+                        <a href="#" class="nav-item active">
+                            <span class="nav-icon">🎯</span>
+                            <span>Goals</span>
+                        </a>
+                        <a href="#" class="nav-item">
+                            <span class="nav-icon">⚙️</span>
+                            <span>More</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="screen-label">Goals View</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
